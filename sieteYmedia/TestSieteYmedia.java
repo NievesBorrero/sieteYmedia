@@ -13,7 +13,7 @@ import utiles.Teclado;
 public class TestSieteYmedia {
 	static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 	public static void main(String[] args) {
-		Menu menu = new Menu("SIETE Y MEDIA", new String[] { "aÒadir jugador",
+		Menu menu = new Menu("SIETE Y MEDIA", new String[] { "a√±adir jugador",
 				"Jugar partida", "Ranking", "Eliminar jugador", "Salir" });
 		int opcion;
 		do {
@@ -58,7 +58,7 @@ public class TestSieteYmedia {
 	}
 	
 	/**
-	 * Comprueba si jugadores est· vacÌo.
+	 * Comprueba si jugadores est√° vac√≠o.
 	 * @return
 	 */
 	private static boolean isEmpty() {
@@ -98,7 +98,7 @@ public class TestSieteYmedia {
 					jugadores.get(opcion - 1).esParticipante = true;
 					n_jugadores++;
 					if(n_jugadores<opciones.length)
-						deseaContinuar=Teclado.deseaContinuar("Deseas aÒadir otro participante?");
+						deseaContinuar=Teclado.deseaContinuar("Deseas a√±adir otro participante?");
 				} while (deseaContinuar);
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println("Selecciona una opcion valida");
@@ -112,9 +112,11 @@ public class TestSieteYmedia {
 			try {
 				partida.jugarPartida();
 			} catch (BarajaVaciaException e) {
-				System.out.println(e.getMessage());;
+				System.out.println(e.getMessage());
+			} catch (MinimoDosJugadoresException e) {
+				System.out.println(e.getMessage());
 			}
-			for (int i = 0; i < partida.tamaÒoParticipantes(); i++) {
+			for (int i = 0; i < partida.tama√±oParticipantes(); i++) {
 				partida.getParticipante(i).esParticipante=false; 
 					// Una vez terminada la partida,nadie es participante
 			}
@@ -122,4 +124,5 @@ public class TestSieteYmedia {
 	}
 }
 		
+
 
