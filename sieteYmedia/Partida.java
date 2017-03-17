@@ -23,24 +23,45 @@ public class Partida {
 	}
 
 	/**
-	 * En este mÈtodo se resuelve la partida
-	 * @throws BarajaVaciaException 
+	 * Comprueba que haya dos jugadores como m√≠nimo
+	 * 
+	 * @return true o false
 	 */
-	void jugarPartida() throws BarajaVaciaException {
+	private static boolean minimoDosJugadores(ArrayList<Jugador> participantes) {
+		return (participantes.size() >= 2);
+	}
+
+	/**
+	 * En este m√©todo se resuelve la partida
+	 * 
+	 * @throws BarajaVaciaException
+	 * @throws MinimoDosJugadoresException
+	 */
+	void jugarPartida() throws BarajaVaciaException, MinimoDosJugadoresException {
+
+		if (!minimoDosJugadores(participantes))
+			throw new MinimoDosJugadoresException("Como minimo debe haber dos participantes");
+
 		int rondas = Teclado.leerEntero("Cuantas rondas jugareis?");
+
 		for (int j = 0; j < rondas; j++) {
 			double[] puntuaciones = new double[participantes.size()];
 			// Creo un array para almacenar las puntuaciones.
 			int i = 0;
 			for (Jugador jugador : participantes) {
 				puntuaciones[i++] = jugarTurno(jugador.getAlias());
-				// Guardo la puntuaciÛn en el array.
+				// Guardo la puntuaci√≥n en el array.
 				jugador.sumarPartidasJugadas();
 			}
+
 			mostrarPuntuacion(puntuaciones, participantes);
-			ganador = obtenerGanador(puntuaciones, participantes);
-			ganador.sumarPartidasGanadas();
-			mostrarGanador();
+			try {
+				ganador = obtenerGanador(puntuaciones, participantes);
+				ganador.sumarPartidasGanadas();
+				mostrarGanador();
+			} catch (NullPointerException e) {
+				System.out.println("Increible!, todos habeis perdido");
+			}
 			ganador = null;
 		}
 	}
@@ -53,43 +74,43 @@ public class Partida {
 	 * @return campeon
 	 */
 
-	private Jugador obtenerGanador(double[] puntuaciones,
-			ArrayList<Jugador> participantes) {
+	private Jugador obtenerGanador(double[] puntuaciones, ArrayList<Jugador> participantes) {
 		double puntosCampeon = 0;
 		Jugador campeon = null;
 		for (int i = 0; i < puntuaciones.length; i++) {
-			if (puntuaciones[i] > puntosCampeon
-					&& puntuaciones[i] <= SIETEYMEDIA){
+			if (puntuaciones[i] > puntosCampeon && puntuaciones[i] <= SIETEYMEDIA) {
 				puntosCampeon = puntuaciones[i];
-			campeon = participantes.get(i);
+				campeon = participantes.get(i);
+				if (puntosCampeon == SIETEYMEDIA) { //Gana el primer jugador que obtenga 7.5
+					return campeon;
+				}
+
 			}
 		}
 		return campeon;
 	}
 
 	/**
-	 * Muestra la puntuaciÛn obtenida por cada jugador.
+	 * Muestra la puntuaci√≥n obtenida por cada jugador.
 	 * 
 	 * @param puntuaciones
 	 * @param participantes
 	 */
-	private void mostrarPuntuacion(double[] puntuaciones,
-			ArrayList<Jugador> participantes) {
+	private void mostrarPuntuacion(double[] puntuaciones, ArrayList<Jugador> participantes) {
 		System.out.println("PUNTUACION:");
 		for (int i = 0; i < puntuaciones.length; i++) {
-			System.out.println(participantes.get(i).getAlias() + ": "
-					+ puntuaciones[i]);
+			System.out.println(participantes.get(i).getAlias() + ": " + puntuaciones[i]);
 		}
 
 	}
 
 	/**
-	 * En este mÈtodo se desarrolla el turno de cada jugador.
+	 * En este m√©todo se desarrolla el turno de cada jugador.
 	 * 
 	 * @param jugador
 	 * @param turno
 	 * @return
-	 * @throws BarajaVaciaException 
+	 * @throws BarajaVaciaException
 	 */
 	private double jugarTurno(String alias) throws BarajaVaciaException {
 		Carta carta;
@@ -128,8 +149,9 @@ public class Partida {
 	 * @return true o false
 	 */
 	private boolean esSieteYmedia(double puntos) {
-		if (puntos == SIETEYMEDIA)
+		if (puntos == SIETEYMEDIA) {
 			return true;
+		}
 		return false;
 	}
 
@@ -149,7 +171,7 @@ public class Partida {
 	}
 
 	/**
-	 * AÒade un nuevo participante
+	 * A√±ade un nuevo participante
 	 * 
 	 * @param jugador
 	 */
@@ -159,11 +181,11 @@ public class Partida {
 	}
 
 	/**
-	 * Devuelve el tamaÒo del Arraylist de participantes
+	 * Devuelve el tama√±o del Arraylist de participantes
 	 * 
 	 * @return
 	 */
-	public int tamaÒoParticipantes() {
+	public int tama√±oParticipantes() {
 		return participantes.size();
 	}
 
