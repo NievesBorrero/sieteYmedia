@@ -2,7 +2,6 @@ package sieteYmedia;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.ListIterator;
 
 public class Jugadores {
@@ -20,7 +19,7 @@ public class Jugadores {
 	}
 	
 	/**
-	 * AÒade un jugador
+	 * A√±ade un jugador
 	 * @param jugador
 	 */
 	public void add(Jugador jugador) {
@@ -31,12 +30,17 @@ public class Jugadores {
 	 * Elimina un jugador
 	 * @param index
 	 */
-	public void remove(int index) {
-		jugadores.remove(index);
+	public void remove(int index) throws IndiceNoValidoException{
+		try {
+			jugadores.remove(index);
+		} catch (IndexOutOfBoundsException e) {
+			throw new IndiceNoValidoException("Error al eliminar, "
+					+ "indice no valido");
+		}
 		
 	}
 	/**
-	 * Comprueba si la lista est· vacÌa
+	 * Comprueba si la lista est√° vac√≠a
 	 * @return boolean
 	 */
 	public boolean isEmpty() {
@@ -68,7 +72,7 @@ public class Jugadores {
 	}
 	
 	/**
-	 * Devuelve el tamaÒo de la lista de jugadores.
+	 * Devuelve el tama√±o de la lista de jugadores.
 	 * @return entero
 	 */
 	public int size() {
