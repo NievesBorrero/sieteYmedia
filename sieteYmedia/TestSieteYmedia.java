@@ -48,7 +48,7 @@ public class TestSieteYmedia {
 			jugadores.remove(Teclado
 					.leerEntero("Introduce el numero de jugador que deseas borrar"));
 		} catch (IndiceNoValidoException e) {
-			e.getMessage();
+			System.out.println(e.getMessage());
 		}
 
 	}
