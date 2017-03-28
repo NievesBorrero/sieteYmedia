@@ -4,16 +4,17 @@ package sieteYmedia;
  * @author Nieves Borrero
  */
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.ListIterator;
 
 import sieteYmedia.mazo.BarajaVaciaException;
 import utiles.Menu;
 import utiles.Teclado;
 
 public class TestSieteYmedia {
-	static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+	static Jugadores jugadores = Jugadores.getInstance();
+	
 	public static void main(String[] args) {
-		Menu menu = new Menu("SIETE Y MEDIA", new String[] { "añadir jugador",
+		Menu menu = new Menu("SIETE Y MEDIA", new String[] { "aÃ±adir jugador",
 				"Jugar partida", "Ranking", "Eliminar jugador", "Salir" });
 		int opcion;
 		do {
@@ -43,9 +44,8 @@ public class TestSieteYmedia {
 	 * elimina un jugador de la lista
 	 */
 	private static void eliminarJugador() {
-		int index = Teclado
-				.leerEntero("Introduce el numero de jugador que deseas borrar");
-		jugadores.remove(index);
+		jugadores.remove(Teclado
+				.leerEntero("Introduce el numero de jugador que deseas borrar"));
 
 	}
 
@@ -53,25 +53,18 @@ public class TestSieteYmedia {
 	 * introduce un jugador en la lista
 	 */
 	private static void annadirJugador() {
-		Jugador jugador=new Jugador(Teclado.leerCadena("Alias:"));
-		jugadores.add(jugador);
+		jugadores.add(new Jugador(Teclado.leerCadena("Alias:")));
 	}
 	
-	/**
-	 * Comprueba si jugadores está vacío.
-	 * @return
-	 */
-	private static boolean isEmpty() {
-		return jugadores.isEmpty();
-	}
 	/**
 	 * muestra el ranking de jugadores
 	 */
 	private static void ranking() {
-		if(!isEmpty()){
-			Collections.sort(jugadores);
-			for(Jugador j: jugadores){
-				System.out.println(j.toString());
+		if(!jugadores.isEmpty()){
+			jugadores.ordenarPorPartidasGanadas();
+			ListIterator<Jugador> it= jugadores.toIterator();
+			while(it.hasNext()){
+				System.out.println(it.next());
 			}
 		}
 		else
@@ -81,7 +74,7 @@ public class TestSieteYmedia {
 	 * se juega una partida
 	 */
 	private static void jugar() {
-		if (!isEmpty()) {
+		if (!jugadores.isEmpty()) {
 			try {
 				String alias;
 				int n_jugadores=0;
@@ -98,14 +91,18 @@ public class TestSieteYmedia {
 					jugadores.get(opcion - 1).esParticipante = true;
 					n_jugadores++;
 					if(n_jugadores<opciones.length)
-						deseaContinuar=Teclado.deseaContinuar("Deseas añadir otro participante?");
+						deseaContinuar=Teclado.deseaContinuar("Deseas aÃ±adir otro participante?");
 				} while (deseaContinuar);
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println("Selecciona una opcion valida");
 			}
 			ArrayList<Jugador> nuevaPartida= new ArrayList<Jugador>();
 			Partida partida=new Partida(nuevaPartida);
-			for (Jugador jugador:jugadores){
+			
+			ListIterator<Jugador> it= jugadores.toIterator();
+			Jugador jugador;
+			while(it.hasNext()){
+				jugador=it.next();
 				if(jugador.esParticipante)
 					partida.add(jugador);		
 			}
