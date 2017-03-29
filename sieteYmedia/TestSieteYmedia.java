@@ -65,8 +65,9 @@ public class TestSieteYmedia {
 	 */
 	private static void ranking() {
 		if(!jugadores.isEmpty()){
-			jugadores.ordenarPorPartidasGanadas();
-			ListIterator<Jugador> it= jugadores.toIterator();
+			Jugadores ranking= (Jugadores) jugadores.clone();
+			ranking.ordenarPorPartidasGanadas();
+			ListIterator<Jugador> it= ranking.toIterator();
 			while(it.hasNext()){
 				System.out.println(it.next());
 			}
@@ -74,6 +75,7 @@ public class TestSieteYmedia {
 		else
 			System.out.println("No existen jugadores");				
 	}
+	
 	/**
 	 * se juega una partida
 	 */
