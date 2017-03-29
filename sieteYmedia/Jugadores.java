@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ListIterator;
 
-public class Jugadores {
+public class Jugadores implements Cloneable{
 	
 	private static ArrayList<Jugador> jugadores;
 	
@@ -77,6 +77,19 @@ public class Jugadores {
 	 */
 	public int size() {
 		return jugadores.size();
+	}
+	
+	/**
+	 * Devuelve la lista clonada
+	 */
+	@Override
+	public Object clone(){
+		try {
+			return (Jugadores) super.clone(); 
+		} catch (CloneNotSupportedException e) {
+			System.out.println("No se puede duplicar");
+		}
+		return jugadores.clone();
 	}
 
 }
